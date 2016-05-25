@@ -52,12 +52,6 @@ public class User {
 		this.contactInfo = contactInfo;
 	}
 
-	public User(String username, String password, boolean enabled, String badRole) {
-		this.username = username;
-		this.password = password;
-		this.enabled = enabled;
-	}
-
 	@Id
 	@Column(name = "username", unique = true, nullable = false, length = 45)
 	public String getUsername() {

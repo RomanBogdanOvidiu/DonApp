@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().csrf()
 				.and().exceptionHandling().accessDeniedPage("/403");
 		
-		
+		http.csrf().disable();
 		
 //		http.authorizeRequests().antMatchers("/**")
 //		.access("hasRole('ROLE_USER')").and().formLogin()
@@ -54,5 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder;
 	}
+	
 	
 }

@@ -42,7 +42,6 @@
 		$(document)
 				.ready(
 						function() {
-
 							$('#w-input-search')
 									.autocomplete(
 											{
@@ -51,7 +50,6 @@
 												delimiter : ",",
 												transformResult : function(
 														response) {
-
 													return {
 														//response=response;
 														//$("#div1").html(response);
@@ -61,17 +59,13 @@
 																				.parseJSON(response),
 																		function(
 																				item) {
-
 																			return {
 																				value : item.donationsTitle,
 																				data : item.donationsId
 																			};
 																		})
-
 													};
-
 												}
-
 											});
 						});
 	</script>
@@ -116,5 +110,3 @@
 	</footer>
 </body>
 </html>
-
-

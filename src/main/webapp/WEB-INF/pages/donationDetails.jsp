@@ -53,7 +53,9 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-       <a class="navbar-brand" href="#page-top">Our lovely donor is ${(donation.user.username) }</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/client/${(donation.user.username)}">Our lovely donor is
+					${(donation.user.username) } 
+					</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -61,11 +63,12 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="page-scroll"><a href="${pageContext.request.contextPath}/user/donation">Home</a></li>
+					<li class="page-scroll"><a
+						href="${pageContext.request.contextPath}/user/donation">Home</a></li>
 					<li class="page-scroll"><a href="#portfolio">Portfolio</a></li>
 					<li class="page-scroll"><a href="#about">About</a></li>
 					<li class="page-scroll"><a href="#contact">Contact</a></li>
-					
+
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -106,7 +109,7 @@
 								<i class="fa fa-search-plus fa-3x"></i>
 							</div>
 						</div> <img
-						src="${pageContext.request.contextPath}/resources/img/portfolio/cabin.png"
+						src="${pageContext.request.contextPath}/resources/img/portfolio/cake.png"
 						class="img-responsive" alt="">
 					</a>
 				</div>
@@ -208,54 +211,64 @@
 				<div class="col-lg-8 col-lg-offset-2">
 					<!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
 					<!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-					<form name="sentMessage" id="contactForm" novalidate>
-						<div class="row control-group">
-							<div
-								class="form-group col-xs-12 floating-label-form-group controls">
-								<label>Name</label> <input type="text" class="form-control"
-									placeholder="Name" id="name" required
-									data-validation-required-message="Please enter your name.">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="row control-group">
-							<div
-								class="form-group col-xs-12 floating-label-form-group controls">
-								<label>Email Address</label> <input type="email"
-									class="form-control" placeholder="Email Address" id="email"
-									required
-									data-validation-required-message="Please enter your email address.">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="row control-group">
-							<div
-								class="form-group col-xs-12 floating-label-form-group controls">
-								<label>Phone Number</label> <input type="tel"
-									class="form-control" placeholder="Phone Number" id="phone"
-									required
-									data-validation-required-message="Please enter your phone number.">
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<div class="row control-group">
-							<div
-								class="form-group col-xs-12 floating-label-form-group controls">
-								<label>Message</label>
-								<textarea rows="5" class="form-control" placeholder="Message"
-									id="message" required
-									data-validation-required-message="Please enter a message."></textarea>
-								<p class="help-block text-danger"></p>
-							</div>
-						</div>
-						<br>
-						<div id="success"></div>
-						<div class="row">
-							<div class="form-group col-xs-12">
-								<button type="submit" class="btn btn-success btn-lg">Send</button>
-							</div>
-						</div>
-					</form>
+						<form:form method="post" action="${pageContext.request.contextPath}/user/donation/view/contact/${donation.user.username}" modelAttribute="contactData"
+		cssClass="form">
+		<fieldset>
+			<legend>
+				<Strong>Contact:</Strong>
+			</legend>
+			<strong><br />If any problems appear, contact us at:</strong> <br /> <br />
+				 <a>donationApp@gmail.com</a>
+			<br /> <br /> <strong> To contact the donor directly from out website please fill in  </strong> 
+			
+			<div class="row control-group">
+				<label class="email" for="name"><strong>NAME</strong></label>
+				<div class="controls">
+				<form:errors path="name" cssClass="error help-inline inline"
+						element="span" id="error"/>
+					<form:input path="name" cssClass="span3" cssErrorClass="error" />
+					
+				</div>
+			</div>
+
+			<div class="row control-group">
+				<label class="control-label" for="email"><strong>EMAIL</strong></label>
+				<div class="controls">
+				<form:errors path="email" cssClass="error help-inline inline"
+						element="span" id="error"/>
+					<form:input path="email" cssClass="span3" cssErrorClass="error" />
+					
+				</div>
+			</div>
+			<div class="row control-group">
+				<label class="control-label" for="subject"><strong>SUBJECT</strong></label>
+				<div class="controls">
+				<form:errors path="subject" cssClass="error help-inline inline"
+						element="span" id="error"/>
+					<form:input path="subject" cssClass="span3"
+						cssErrorClass="error" />
+					
+				</div>
+			</div>
+			<div class="form_settings">
+				<label class="control-label" for="message"><strong>MESSAGE</strong></label>
+				<div class="controls">
+				<form:errors path="message" cssClass="error help-inline inline"
+						element="span" id="error" />
+					<form:textarea path="message" cssClass="span3"
+						cssErrorClass="error" />
+					
+				</div>
+			</div>
+
+			
+                   <input type="submit" class="btn btn-primary"
+                        value="Send">&nbsp;
+                    
+					
+               
+		</fieldset>
+	</form:form>
 				</div>
 			</div>
 		</div>
@@ -433,9 +446,7 @@
 							<img
 								src="${pageContext.request.contextPath}/resources/img/portfolio/game.png"
 								class="img-responsive img-centered" alt="">
-							<p>
-								
-							</p>
+							<p></p>
 							<ul class="list-inline item-details">
 								<li>Client: <strong><a
 										href="http://startbootstrap.com">Start Bootstrap</a> </strong>
@@ -474,9 +485,7 @@
 							<img
 								src="${pageContext.request.contextPath}/resources/img/portfolio/safe.png"
 								class="img-responsive img-centered" alt="">
-							<p>
-								
-							</p>
+							<p></p>
 							<ul class="list-inline item-details">
 								<li>Client: <strong><a
 										href="http://startbootstrap.com">Start Bootstrap</a> </strong>
@@ -515,9 +524,7 @@
 							<img
 								src="${pageContext.request.contextPath}/resources/img/portfolio/submarine.png"
 								class="img-responsive img-centered" alt="">
-							<p>
-								
-							</p>
+							<p></p>
 							<ul class="list-inline item-details">
 								<li>Client: <strong><a
 										href="http://startbootstrap.com">Start Bootstrap</a> </strong>

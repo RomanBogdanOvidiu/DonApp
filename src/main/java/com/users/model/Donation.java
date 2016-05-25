@@ -2,7 +2,6 @@ package com.users.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +29,10 @@ public class Donation {
 	private String donationsDesc;
 	private String city;
 	private User user;
-	
-	private List<Image> img=new ArrayList<Image>();
+
+	private List<Imagine> img = new ArrayList<Imagine>();
+
+	//private Blob currentlyUploading;
 
 	public Donation() {
 	}
@@ -96,15 +97,23 @@ public class Donation {
 	}
 
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "donation", cascade = CascadeType.REMOVE)
-	public List<Image> getImg() {
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "donation", cascade = CascadeType.REMOVE)
+	public List<Imagine> getImg() {
 		return img;
 	}
 
-	public void setImg(List<Image> img) {
+	public void setImg(List<Imagine> img) {
 		this.img = img;
 	}
 
-	
+//	@Transient
+//	public Blob getCurrentlyUploading() {
+//		return currentlyUploading;
+//	}
+//
+//	public void setCurrentlyUploading(Blob currentlyUploading) {
+//		this.currentlyUploading = currentlyUploading;
+//	}
 
 }

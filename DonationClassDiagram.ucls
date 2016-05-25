@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="com.config.core" project="DonationApplication" 
+    file="/DonationApplication/src/main/java/com/config/core" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="224" y="80"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="com.config" project="DonationApplication" 
+    file="/DonationApplication/src/main/java/com/config" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="399" y="90"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="com.users.model" project="DonationApplication" 
+    file="/DonationApplication/src/main/java/com/users/model" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="215" y="187"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="4" language="java" name="com.users.service" project="DonationApplication" 
+    file="/DonationApplication/src/main/java/com/users/service" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="215" y="292"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="5" language="java" name="com.users.service.impl" project="DonationApplication" 
+    file="/DonationApplication/src/main/java/com/users/service/impl" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="389" y="374"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="6" language="java" name="com.utils" project="DonationApplication" 
+    file="/DonationApplication/src/main/java/com/utils" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="494" y="291"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="com.web.controller" project="DonationApplication" 
+    file="/DonationApplication/src/main/java/com/web/controller" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="490" y="169"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <dependency id="8">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="9">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="10">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="11">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="12">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

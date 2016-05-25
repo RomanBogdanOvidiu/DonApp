@@ -1,15 +1,22 @@
 package com.web.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Lob;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -31,27 +38,36 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.config.AppConfig;
 import com.users.model.ContactData;
 import com.users.model.Donation;
 import com.users.model.EmailSender;
+import com.users.model.Imagine;
 import com.users.model.Search;
 import com.users.model.User;
 import com.users.model.UserRole;
 import com.users.service.DonationService;
+import com.users.service.ImagineService;
 import com.users.service.UserRoleService;
 import com.users.service.UserService;
+import com.utils.HibernateUtils;
 
 @Controller
 // @SessionAttributes({"donations"})
 public class MainController {
-
+	@Autowired
+	private ApplicationContext appContext;
 	@Autowired
 	ServletContext servletContext;
 
 	@Autowired
 	protected UserService userService;
+	
+	@Autowired
+	protected ImagineService imagineService;
 
 	@Autowired
 	protected UserRoleService userRoleService;
@@ -154,7 +170,7 @@ public class MainController {
 				}
 			}
 
-			UserRole uR = new UserRole(u1, "ROLE_USER");
+			UserRole uR = new UserRole(u1, "ROLE_ADMIN");
 			roleSet.add(uR);
 
 			u1.setUserRole(roleSet);
@@ -223,21 +239,59 @@ public class MainController {
 		Donation donation = new Donation();
 
 		donation.setUser(user);
+		
 
 		forSignUp.addObject("donation", donation);
 		forSignUp.setViewName("donation");
 		return forSignUp;
 	}
 
+	@Transactional
 	@RequestMapping(value = "/donation/{username}", method = RequestMethod.POST)
-	public ModelAndView createDonationPost(Donation donation, @PathVariable("username") String username) {
-		ModelAndView sucCreated = new ModelAndView();
-
+	public String createDonationPost(Donation donation, @PathVariable("username") String username,
+			@RequestParam(value = "image", required = false) MultipartFile image) {
+		
+		Imagine img=new Imagine();
+		
+		if(!donation.getCity().trim().equals("") && !donation.getDonationsDesc().trim().equals("")
+				&& !donation.getDonationsTitle().trim().equals("")){
 		User u = userService.findByUsername(username);
 		donation.setUser(u);
 		donationService.insert(donation);
-		sucCreated.setViewName("redirect:/user/donation/");
-		return sucCreated;
+
+		    byte[] buf = new byte[4096];
+		try {
+			buf=image.getBytes();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		img.setDonation(donation);
+		img.setImgB(buf);
+		
+		donation.getImg().add(img);		
+		imagineService.save(img);
+		
+//		Session session = new AppConfig().sessionFactory().getCurrentSession();
+//		byte[] byteArr = null;
+//		try {
+//			byteArr = image.getBytes();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		Blob blob = Hibernate.getLobCreator(session).createBlob(byteArr);
+//		
+//		//Save method will be call here 
+	
+//		Imagine imagine = new Imagine();
+//		imagine.setImgB(blob);
+//		imagine.setDonation(donation);
+//		donation.getImg().add(imagine);
+		
+		return "redirect:/user/donation/";}
+		return "redirect:/wrong";
 	}
 
 	@RequestMapping(value = "/user/donation", method = RequestMethod.GET)
@@ -300,8 +354,12 @@ public class MainController {
 	public ModelAndView viewDonation(@PathVariable("id") Integer id) {
 
 		ModelAndView model = new ModelAndView();
+		ContactData contactData = new ContactData();
 		Donation don = donationService.findByDonationsId(id);
+		
+	//	System.out.println("ITS MY LIFE : "+don.getImg());
 		model.addObject("donation", don);
+		model.addObject("contactData", contactData);
 		model.setViewName("donationDetails");
 		return model;
 	}
@@ -342,42 +400,47 @@ public class MainController {
 
 	}
 
-	// ///user/donation/view/4
-	// @RequestMapping(value = "user/donation/view/contact/{id}", method =
-	// RequestMethod.POST)
-	// public String contactPost(@Valid ContactData contactData,
-	// BindingResult bindingResult, Model model,@PathVariable("donationsId")
-	// Integer id) {
-	//
-	//
-	//
-	// Donation don=donationService.findByDonationsId(id);
-	//
-	//
-	// if (bindingResult.hasErrors()) {
-	// model.addAllAttributes(bindingResult.getModel());
-	// return "redirect:/login";
-	// }
-	// String emailAdr = contactData.getEmail();
-	// String message = contactData.getMessage();
-	// message = message + "\n NAME: " + contactData.getName();
-	// String subject = contactData.getSubject();
-	//
-	// WebApplicationContext ctx = WebApplicationContextUtils
-	// .getRequiredWebApplicationContext(servletContext);
-	// EmailSender mm = (EmailSender) ctx.getBean("mailMail");
-	//
-	// try {
-	// mm.sendMail(emailAdr, don.getUser().getEmail(), subject, message);
-	// model.addAttribute("contactStatus",
-	// "Message has been sent. We will get back to you.");
-	// } catch (Throwable ex) {
-	// model.addAttribute("contactStatus", "Message could not be sent.");
-	// ex.printStackTrace();
-	//
-	// }
-	//
-	// return "redirect:/login";
-	// }
+
+	@RequestMapping(value = "/client/{username}", method = RequestMethod.GET)
+	public ModelAndView clientDetails(@PathVariable("username")
+	 String username) {
+		ModelAndView forSignUp = new ModelAndView();
+		User user = userService.findByUsername(username);
+		forSignUp.addObject("clients", user);
+		forSignUp.setViewName("client");
+		return forSignUp;
+	}
+	
+	
+	
+	
+	 ///user/donation/view/4
+	 @RequestMapping(value = "user/donation/view/contact/{username}", method =
+	 RequestMethod.POST)
+	 public String contactPost(ContactData contactData,@PathVariable("username")
+	 String username  ,BindingResult result) {
+	
+	
+
+		 User u=userService.findByUsername(username);
+		 
+	 
+	 String to=u.getEmail();
+	 String emailAdr = contactData.getEmail();
+	 String message = contactData.getMessage();
+	 message = message + "\n NAME: " + contactData.getName() + contactData.getEmail();
+	 String subject = contactData.getSubject();
+	
+	 //WebApplicationContext ctx = appContext.getRequiredWebApplicationContext(servletContext);
+	 
+	// EmailSender mm = (EmailSender) appContext.getBean("mailmail");
+	
+	 
+//	 mm.sendMail("ichallengeyu@gmail.com", to, subject, message);
+	
+	
+	
+	 return "redirect:/user/donation";
+	 }
 
 }
